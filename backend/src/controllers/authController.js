@@ -73,6 +73,9 @@ async function signup(req, res) {
     if (!data.user) {
       return res.status(400).json({ error: 'Unable to create Supabase user' });
     }
+    if (Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      return res.status(409).json({ error: 'Email already registered' });
+    }
 
     const client = await db.connect();
     try {
