@@ -1,0 +1,12 @@
+{
+  "name": "promptwall-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/write-config.js",
+    "dev": "node scripts/write-config.js && npx serve public"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

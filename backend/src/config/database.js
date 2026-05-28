@@ -1,16 +1,13 @@
 const { Pool } = require('pg');
 
-const pool = new Pool(
-  process.env.DATABASE_URL
-    ? { connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } }
-    : {
-        user: process.env.PGUSER,
-        password: process.env.PGPASSWORD,
-        host: process.env.PGHOST || 'localhost',
-        port: parseInt(process.env.PGPORT) || 5432,
-        database: process.env.PGDATABASE,
-      }
-);
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL must be set to your Supabase Postgres connection string');
+}
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 
 pool.on('error', (err) => {
   console.error('Unexpected PostgreSQL client error:', err.message);

@@ -97,7 +97,7 @@ Quick start:
 
 # 2. Configure environment
 cp .env.example backend/.env
-# Fill in DATABASE_URL, SUPABASE_URL, SUPABASE_ANON_KEY, and GROQ_API_KEY
+# Fill in DATABASE_URL, NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, and GROQ_API_KEY
 
 # 3. Install and run
 cd backend
@@ -116,28 +116,33 @@ Open `http://localhost:3000`
 ```env
 PORT=3000
 DATABASE_URL=postgresql://postgres.your_project_ref:your_password@aws-0-us-east-1.pooler.supabase.com:6543/postgres
-PGUSER=postgres.your_project_ref
-PGPASSWORD=your_password
-PGHOST=aws-0-us-east-1.pooler.supabase.com
-PGPORT=6543
-PGDATABASE=postgres
-SUPABASE_URL=https://your_project_ref.supabase.co
-SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_SUPABASE_URL=https://your_project_ref.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
+FRONTEND_URL=http://localhost:3000
 GROQ_API_KEY=your_groq_api_key
 TRAINING_MODEL=llama-3.1-8b-instant
 GROUND_TRUTH_MODEL=llama-3.3-70b-versatile
 AGENT_MODEL=llama-3.3-70b-versatile
 ```
 
-When `DATABASE_URL` is set it takes priority over the individual `PG*` variables.
+`DATABASE_URL` is required because the backend runs server-side SQL queries through `pg`.
 
 ---
 
 ## Deploying to Render
 
 1. Create a Supabase project and run `backend/src/db/schema.sql` in the Supabase SQL editor
-2. Add `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `GROQ_API_KEY`, and any model overrides in the Render environment dashboard
-3. Set **Root Directory** to `backend` and **Start Command** to `node src/server.js`
+2. Create a Render Web Service with **Root Directory** set to `backend`
+3. Set **Build Command** to `npm install`
+4. Set **Start Command** to `node server.js`
+5. Add `DATABASE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `GROQ_API_KEY`, `FRONTEND_URL`, and any model overrides in the Render environment dashboard
+
+## Deploying to Vercel
+
+1. Create a Vercel project with **Root Directory** set to `frontend`
+2. Set `VITE_API_BASE_URL` to your Render API URL with `/api`, for example `https://promptwall-api.onrender.com/api`
+3. Deploy the frontend
+4. After Vercel gives you the frontend URL, set Render's `FRONTEND_URL` to that URL and redeploy the backend
 
 ---
 

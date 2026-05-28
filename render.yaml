@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: promptwall-api
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: TRAINING_MODEL
+        value: llama-3.1-8b-instant
+      - key: GROUND_TRUTH_MODEL
+        value: llama-3.3-70b-versatile
+      - key: AGENT_MODEL
+        value: llama-3.3-70b-versatile

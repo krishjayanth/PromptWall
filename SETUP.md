@@ -31,8 +31,9 @@ Open `backend/.env` and set:
 |---|---|
 | `PORT` | Port to run the server on (default `3000`) |
 | `DATABASE_URL` | Supabase Postgres connection string |
-| `SUPABASE_URL` | Supabase project URL |
-| `SUPABASE_ANON_KEY` | Supabase anon public API key |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable API key |
+| `FRONTEND_URL` | Allowed frontend origin for CORS, e.g. your Vercel URL |
 | `GROQ_API_KEY` | Your Groq API key |
 | `TRAINING_MODEL` | Groq model for the training LLM (default `llama-3.1-8b-instant`) |
 | `GROUND_TRUTH_MODEL` | Groq model for ground truth (default `llama-3.3-70b-versatile`) |
@@ -63,6 +64,15 @@ npm start
 ```
 
 The server starts at **http://localhost:3000**
+
+For separate frontend development:
+
+```bash
+cd frontend
+npm install
+$env:VITE_API_BASE_URL="http://localhost:3000/api"
+npm run dev
+```
 
 ---
 
