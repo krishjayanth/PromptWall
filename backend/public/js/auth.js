@@ -62,9 +62,15 @@ async function handleSignup(e) {
   setLoading('signup-btn', 'signup-btn-text', true);
   try {
     const res = await api.auth.signup({ name, email, password });
-    setToken(res.token);
     setUser(res.user);
-    window.location.href = '/dashboard.html';
+    if (res.token) {
+      setToken(res.token);
+      window.location.href = '/dashboard.html';
+      return;
+    }
+    showError('signup-error', res.message || 'Account created. Please sign in.');
+    setLoading('signup-btn', 'signup-btn-text', false, 'Create Account');
+    switchTab('login');
   } catch (err) {
     showError('signup-error', err.message);
     setLoading('signup-btn', 'signup-btn-text', false, 'Create Account');

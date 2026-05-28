@@ -17,10 +17,10 @@ The learning curve for each model is tracked and visualized as accuracy improves
 | Layer | Technology |
 |---|---|
 | Backend | Node.js, Express.js |
-| Database | PostgreSQL |
+| Database | Supabase Postgres |
 | LLM | Groq API |
 | Frontend | HTML, CSS, Vanilla JS |
-| Auth | JWT |
+| Auth | Supabase Auth |
 | API Docs | Swagger (OpenAPI 3.0) |
 
 ---
@@ -93,13 +93,11 @@ See [SETUP.md](SETUP.md) for full instructions.
 Quick start:
 
 ```bash
-# 1. Create the database
-psql -U postgres -c "CREATE DATABASE promptwall;"
-psql -U postgres -d promptwall -f backend/src/db/schema.sql
+# 1. Run backend/src/db/schema.sql in the Supabase SQL editor
 
 # 2. Configure environment
 cp .env.example backend/.env
-# Fill in PGPASSWORD, JWT_SECRET, and GROQ_API_KEY
+# Fill in DATABASE_URL, SUPABASE_URL, SUPABASE_ANON_KEY, and GROQ_API_KEY
 
 # 3. Install and run
 cd backend
@@ -113,29 +111,18 @@ Open `http://localhost:3000`
 
 ## Example of Environment Variables
 
-**Local development** — use individual Postgres vars:
+**Supabase**:
 
 ```env
 PORT=3000
-PGUSER=postgres
+DATABASE_URL=postgresql://postgres.your_project_ref:your_password@aws-0-us-east-1.pooler.supabase.com:6543/postgres
+PGUSER=postgres.your_project_ref
 PGPASSWORD=your_password
-PGHOST=localhost
-PGPORT=5432
-PGDATABASE=promptwall
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRES_IN=7d
-GROQ_API_KEY=your_groq_api_key
-TRAINING_MODEL=llama-3.1-8b-instant
-GROUND_TRUTH_MODEL=llama-3.3-70b-versatile
-AGENT_MODEL=llama-3.3-70b-versatile
-```
-
-**Render / production** — use `DATABASE_URL` instead of the individual `PG*` vars:
-
-```env
-DATABASE_URL=postgresql://user:password@host:5432/promptwall
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRES_IN=7d
+PGHOST=aws-0-us-east-1.pooler.supabase.com
+PGPORT=6543
+PGDATABASE=postgres
+SUPABASE_URL=https://your_project_ref.supabase.co
+SUPABASE_ANON_KEY=your_supabase_anon_key
 GROQ_API_KEY=your_groq_api_key
 TRAINING_MODEL=llama-3.1-8b-instant
 GROUND_TRUTH_MODEL=llama-3.3-70b-versatile
@@ -148,8 +135,8 @@ When `DATABASE_URL` is set it takes priority over the individual `PG*` variables
 
 ## Deploying to Render
 
-1. Create a **Render Postgres** database and link it to your web service — Render auto-sets `DATABASE_URL`
-2. Add `GROQ_API_KEY`, `JWT_SECRET`, and any model overrides in the Render environment dashboard
+1. Create a Supabase project and run `backend/src/db/schema.sql` in the Supabase SQL editor
+2. Add `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `GROQ_API_KEY`, and any model overrides in the Render environment dashboard
 3. Set **Root Directory** to `backend` and **Start Command** to `node src/server.js`
 
 ---

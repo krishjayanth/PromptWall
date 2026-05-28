@@ -22,7 +22,7 @@ const { authenticate } = require('../middleware/authMiddleware');
  *               password: { type: string, minLength: 8 }
  *     responses:
  *       201:
- *         description: User created with JWT token
+ *         description: User created with Supabase access token when email confirmation is not required
  *       409:
  *         description: Email already exists
  */
@@ -32,7 +32,7 @@ router.post('/signup', signup);
  * @swagger
  * /api/auth/login:
  *   post:
- *     summary: Login and receive a JWT token
+ *     summary: Login and receive a Supabase access token
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -46,7 +46,7 @@ router.post('/signup', signup);
  *               password: { type: string }
  *     responses:
  *       200:
- *         description: JWT token returned
+ *         description: Supabase access token returned
  *       401:
  *         description: Invalid credentials
  */

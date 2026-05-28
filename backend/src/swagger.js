@@ -14,7 +14,7 @@ const options = {
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',
-          bearerFormat: 'JWT'
+          bearerFormat: 'Supabase access token'
         }
       }
     }

@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Node.js 18+ and npm
-- PostgreSQL 14+ running locally
+- A Supabase project with Postgres and Auth enabled
 - A Groq API key (get one at console.groq.com)
 
 ---
@@ -30,13 +30,9 @@ Open `backend/.env` and set:
 | Variable | Description |
 |---|---|
 | `PORT` | Port to run the server on (default `3000`) |
-| `PGUSER` | PostgreSQL username |
-| `PGPASSWORD` | PostgreSQL password |
-| `PGHOST` | PostgreSQL host (default `localhost`) |
-| `PGPORT` | PostgreSQL port (default `5432`) |
-| `PGDATABASE` | Database name (e.g. `promptwall`) |
-| `JWT_SECRET` | Any long random string for signing JWTs |
-| `JWT_EXPIRES_IN` | Token lifetime (default `7d`) |
+| `DATABASE_URL` | Supabase Postgres connection string |
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_ANON_KEY` | Supabase anon public API key |
 | `GROQ_API_KEY` | Your Groq API key |
 | `TRAINING_MODEL` | Groq model for the training LLM (default `llama-3.1-8b-instant`) |
 | `GROUND_TRUTH_MODEL` | Groq model for ground truth (default `llama-3.3-70b-versatile`) |
@@ -44,23 +40,9 @@ Open `backend/.env` and set:
 
 ---
 
-## 3. Create the PostgreSQL database
+## 3. Initialize Supabase Postgres
 
-```bash
-psql -U postgres -c "CREATE DATABASE promptwall;"
-```
-
-Then run the schema:
-
-```bash
-psql -U postgres -d promptwall -f backend/src/db/schema.sql
-```
-
-Or use the npm script (requires environment to be set):
-
-```bash
-cd backend && npm run db:init
-```
+Open the Supabase SQL editor for your project, paste the contents of `backend/src/db/schema.sql`, and run it.
 
 ---
 
@@ -115,14 +97,14 @@ backend/
 └── src/
     ├── app.js           # Express app setup
     ├── config/
-    │   ├── database.js  # PostgreSQL pool
+    │   ├── database.js  # Supabase Postgres pool
     │   └── groq.js      # Groq API calls (ground truth + training model)
     ├── agents/
     │   ├── orchestrator.js              # Decides which agents run
     │   ├── learnAgent.js                # Generates insight on mistakes
     │   └── trainingKnowledgeAgent.js    # Updates model's knowledge base
     ├── controllers/     # Route handlers
-    ├── middleware/      # JWT authentication
+    ├── middleware/      # Supabase token authentication
     ├── routes/          # Express routes + Swagger JSDoc
     └── db/schema.sql    # Full database schema
 ```

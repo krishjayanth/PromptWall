@@ -1,16 +1,15 @@
 -- PromptWall Database Schema
 
 CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
-  password_hash VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS training_llms (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
   name VARCHAR(255) NOT NULL,
   description TEXT,
   base_model VARCHAR(255) NOT NULL DEFAULT 'llama-3.1-8b-instant',
@@ -21,7 +20,7 @@ CREATE TABLE IF NOT EXISTS training_llms (
 
 CREATE TABLE IF NOT EXISTS training_sessions (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
   training_llm_id INTEGER REFERENCES training_llms(id) ON DELETE CASCADE,
   started_at TIMESTAMP DEFAULT NOW(),
   ended_at TIMESTAMP,
